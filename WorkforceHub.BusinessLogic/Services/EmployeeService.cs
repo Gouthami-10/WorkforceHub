@@ -1,17 +1,17 @@
 ﻿using WorkforceHubAPI.BusinessLogic.Interfaces;
-using System.Data;
-using Microsoft.Data.SqlClient;
 using WorkforceHub.Models;
-
+using Microsoft.Extensions.Configuration;
+using Microsoft.Data.SqlClient;
+using System.Collections.Generic;
 namespace WorkforceHubAPI.BusinessLogic.Services
 {
     public class EmployeeService : IEmployeeService
     {
         private readonly string _connectionString;
 
-        public EmployeeService(string connectionString)
+        public EmployeeService(IConfiguration configuration)
         {
-            _connectionString = connectionString;
+            _connectionString = configuration.GetConnectionString("DefaultConnection");
         }
 
         public List<EmployeeDto> GetAllEmployees()
@@ -23,10 +23,11 @@ namespace WorkforceHubAPI.BusinessLogic.Services
                 connection.Open();
 
                 // Fetch employees
-                using (var command = new SqlCommand(@"
+                var employeeQuery = @"
                     SELECT e.EmployeeID, p.FirstName, p.LastName, p.Address, e.PayPerHour
                     FROM Employees e
-                    JOIN Person p ON e.EmployeeID = p.PersonID", connection))
+                    JOIN Person p ON e.EmployeeID = p.PersonID";
+                using (var command = new SqlCommand(employeeQuery, connection))
                 using (var reader = command.ExecuteReader())
                 {
                     while (reader.Read())
@@ -44,10 +45,11 @@ namespace WorkforceHubAPI.BusinessLogic.Services
                 }
 
                 // Fetch supervisors
-                using (var command = new SqlCommand(@"
+                var supervisorQuery = @"
                     SELECT s.SupervisorID, p.FirstName, p.LastName, p.Address, s.AnnualSalary
                     FROM Supervisors s
-                    JOIN Person p ON s.SupervisorID = p.PersonID", connection))
+                    JOIN Person p ON s.SupervisorID = p.PersonID";
+                using (var command = new SqlCommand(supervisorQuery, connection))
                 using (var reader = command.ExecuteReader())
                 {
                     while (reader.Read())
@@ -65,10 +67,11 @@ namespace WorkforceHubAPI.BusinessLogic.Services
                 }
 
                 // Fetch managers
-                using (var command = new SqlCommand(@"
+                var managerQuery = @"
                     SELECT m.ManagerID, p.FirstName, p.LastName, p.Address, m.AnnualSalary, m.MaxExpenseAmount
                     FROM Managers m
-                    JOIN Person p ON m.ManagerID = p.PersonID", connection))
+                    JOIN Person p ON m.ManagerID = p.PersonID";
+                using (var command = new SqlCommand(managerQuery, connection))
                 using (var reader = command.ExecuteReader())
                 {
                     while (reader.Read())
@@ -109,6 +112,7 @@ namespace WorkforceHubAPI.BusinessLogic.Services
                     personCommand.Parameters.AddWithValue("@LastName", employeeDto.LastName);
                     personCommand.Parameters.AddWithValue("@Address", employeeDto.Address);
 
+                    // Get the automatically generated PersonID
                     personId = (int)personCommand.ExecuteScalar();
                 }
 

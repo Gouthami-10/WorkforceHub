@@ -24,4 +24,8 @@
     <ProjectReference Include="..\WorkforceHub.Models\WorkforceHub.Models.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Properties\" />
+  </ItemGroup>
+
 </Project>
