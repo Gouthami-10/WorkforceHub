@@ -1,8 +1,9 @@
 ﻿using WorkforceHubAPI.BusinessLogic.Interfaces;
-using WorkforceHub.Models;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Data.SqlClient;
 using System.Collections.Generic;
+using WorkforceHub.Models;
+
 namespace WorkforceHubAPI.BusinessLogic.Services
 {
     public class EmployeeService : IEmployeeService
