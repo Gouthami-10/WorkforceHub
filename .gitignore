@@ -1,0 +1,18 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+*.json
+/WorkforceHub.API/bin/Debug/net8.0
+/WorkforceHub.API/obj
+/.vs/slnx.sqlite
+/WorkforceHub.BusinessLogic/bin/Debug/net8.0
+/WorkforceHub.BusinessLogic/obj
+/WorkforceHub.DataAccess/bin/Debug/net8.0
+/WorkforceHub.DataAccess/obj
+/WorkforceHub.Models/bin/Debug/net8.0
+/WorkforceHub.Models/obj
+/WorkforceHub.Tests/bin
+/WorkforceHub.Tests/obj
+/.vs/New folder (2)/FileContentIndex
+/.vs/New folder (2)/v17
